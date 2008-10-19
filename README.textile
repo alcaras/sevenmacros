@@ -1,11 +1,19 @@
 SevenMacros is a patch for Tekkub's Buffet mod that enables seven separate macros:
+
 AutoBandage - Just for bandages
+
 AutoFood - Just for food
+
 AutoWater - Just for water
+
 AutoHP - Just for Health Pots
+
 AutoMP - Just for Mana Pots
+
 AutoHStone - Just for Health Stones
+
 AutoGem - Just for Mana Gems
+
 
 I made this patch because I like to exercise precise control over when I use what, e.g. often spamming drink while in combat so that I start drinking as soon as I'm out of combat. Buffet's default set up made it so I'd use a mana pot instead of trying to drink, thus I made this patch.
 
