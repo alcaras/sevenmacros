@@ -3,7 +3,13 @@
 --      Locals      --
 ----------------------
 
-local defaults = {macroHP = "#showtooltip\n%MACRO%", macroMP = "#showtooltip\n%MACRO%"}
+-- @@ edits by alcaras here @@ --
+local defaults = {macroHP = "#showtooltip\n%MACRO%", macroMP = "#showtooltip\n%MACRO%",
+		  macroWater = "#showtooltip\n%MACRO%", macroFood = "#showtooltip\n%MACRO%",
+		  macroGem = "#showtooltip\n%MACRO%", macroHStone = "#showtooltip\n%MACRO%",
+		  macroBandage = "#showtooltip\n%MACRO%"}
+-- @@ edits by alcaras end here @@ --
+
 local ids, bests, allitems, items, dirty = LibStub("tekIDmemo"), {}, {}, {
 	bandage = "38640:4100,34721:4800,34722:5800,2581:114,8545:1104,21991:3400,14530:2000,6451:640,3531:301,1251:66,8544:800,21990:2800,14529:1360,6450:400,3530:161",
 	hstone = "14894:600,25881:400,23329:24,25883:1250,25880:180,15723:1400,11951:800,25882:640,25498:96,11952:425,11951:800,5509:500,5510:800,5511:250,5512:100,9421:1200,19004:110,19005:120,19006:275,19007:300,19008:550,19009:600,19010:880,19011:960,19012:1320,19013:1440,22103:2080,22104:2288,22105:2496",
@@ -110,11 +116,31 @@ function Buffet:Scan()
 		end
 	end
 
-	self:Edit("AutoHP", self.db.macroHP, bests.conjfood.id or bests.percfood.id or bests.food.id or bests.hstone.id or bests.hppot.id, bests.hppot.id, bests.hstone.id, bests.bandage.id)
-	self:Edit("AutoMP", self.db.macroMP, bests.conjwater.id or bests.percwater.id or bests.water.id or bests.mstone.id or bests.mppot.id, bests.mppot.id, bests.mstone.id)
+-- @@ edits by alcaras start here @@ --
+	self:EditAny("AutoHP", self.db.macroHP, bests.hppot.id)
+	self:EditAny("AutoMP", self.db.macroMP, bests.mppot.id)
+	self:EditAny("AutoWater", self.db.macroWater, bests.conjwater.id or bests.percwater.id or bests.water.id)
+	self:EditAny("AutoFood", self.db.macroFood, bests.conjfood.id or bests.percfood.id or bests.food.id)
+
+	self:EditAny("AutoGem", self.db.macroMP, bests.mstone.id)
+	self:EditAny("AutoHStone", self.db.macroMP, bests.hstone.id)
+
+	self:EditAny("AutoBandage", self.db.macroMP, bests.bandage.id)
 	dirty = false
 end
 
+
+function Buffet:EditAny(name, substring, desired)
+	local macroid = GetMacroIndexByName(name)
+	if not macroid then return end
+
+	local body = "/use "
+	body = body .. "item:"..tostring(desired)
+
+	EditMacro(macroid, name, 1, substring:gsub("%%MACRO%%", body), 1)
+end
+
+-- @@ edits by alcaras end here @@ --
 
 function Buffet:Edit(name, substring, food, pot, stone, shift)
 	local macroid = GetMacroIndexByName(name)
@@ -129,5 +155,3 @@ function Buffet:Edit(name, substring, food, pot, stone, shift)
 
 	EditMacro(macroid, name, 1, substring:gsub("%%MACRO%%", body), 1)
 end
-
-
